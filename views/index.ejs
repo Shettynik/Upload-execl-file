@@ -1,0 +1,69 @@
+<html>
+
+<head>
+    <meta charset="utf-8">
+    </meta>
+    <meta name="viewport" content="width-=device-width, initial-scale=1.0">
+    </meta>
+    <title>Upload Excel</title>
+    <!-- Font styles from font awesome -->
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Anton&family=Cabin&family=Josefin+Sans:ital,wght@1,300&family=Londrina+Solid&family=News+Cycle&family=Potta+One&family=Roboto+Mono&family=Staatliches&display=swap"
+        rel="stylesheet">
+    <!-- CSS style link -->
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <div class="upload">
+        <div class="head">
+            <h2>UPLOAD FILES</h2>
+            <p>Only xlsx / xls file extensions allowed</p>
+        </div>
+        <form action="/" class="form-upload" method="POST" enctype="multipart/form-data">
+            <div class="drop-zone">
+                <span class="drop-zone__prompt">Drop file here or click to upload</span>
+                <input type="file" name="file" class="drop-zone__input" required>
+            </div>
+            <button type="submit" class="upload-btn">Upload</button>
+        </form>
+    </div>
+    <div class="search">
+        <form action="/search" class="form-search" method="POST">
+            <input type="text" name="name" placeholder="Search by name..." />
+            <input type="text" name="roll_no" placeholder="Search by roll no..." />
+            <button type="submit" class="search-btn">Search</button>
+        </form>
+    </div>
+    <div>
+        <% if(data.length!=0){ %>
+            <table>
+                <tr>
+                    <th>Class</th>
+                    <th>Name</th>
+                    <th>Roll No</th>
+                </tr>
+                <% data.map((d)=>{ %>
+                    <tr>
+                        <td>
+                            <%= d.class %>
+                        </td>
+                        <td>
+                            <%= d.name %>
+                        </td>
+                        <td>
+                            <%= d.roll_no %>
+                        </td>
+                    </tr>
+                    <% }) %>
+            </table>
+            <% }else{ %>
+                <p class="empty">Nothing to display</p>
+                <% } %>
+    </div>
+    <!-- JS Link -->
+    <script src="index.js"></script>
+</body>
+
+</html>
