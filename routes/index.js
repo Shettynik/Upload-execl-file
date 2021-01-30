@@ -5,8 +5,9 @@ const db = require("../Database");
 const upload = require("../multer/multer");
 const router = express.Router();
 
-router.get("/",(req, res)=>{
+router.get("/", async (req, res)=>{
     const sql = `SELECT * FROM students`;
+    const db = await db.getConnection();
     db.query(sql,(err,data)=>{
         if(err){
             console.log(err);
@@ -17,7 +18,7 @@ router.get("/",(req, res)=>{
     });
 });
 
-router.post("/",(req, res)=>{
+router.post("/", (req, res)=>{
     var exceltojson;
     upload(req, res, (err)=>{
         if(err){
@@ -40,11 +41,12 @@ router.post("/",(req, res)=>{
                 input: req.file.path,
                 output: null,
                 lowerCaseHeaders: true
-            },function(err,results){
+            },async function(err,results){
                 if(err){
                     return res.json({error_code:1, err_desc:err, data:null})
                 }
                 else{
+                    const db = await db.getConnection();
                     var sql = "INSERT INTO students(name,roll_no,class) VALUES(?,?,?)";
                     results.forEach((result)=>{
                         try{
@@ -62,8 +64,9 @@ router.post("/",(req, res)=>{
     });
 });
 
-router.post("/search", (req, res)=>{
+router.post("/search",async (req, res)=>{
     try{
+        const db = await db.getConnection();
         var {name,roll_no} = req.body;
         if(name && roll_no){
             var sql = `SELECT * FROM students WHERE name=? AND roll_no=?`;
